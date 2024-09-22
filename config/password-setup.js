@@ -7,7 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/auth/google/callback'
+    callbackURL: process.env.CALLBACK_URL // Ensure this matches in Google Cloud Console
   },
   (accessToken, refreshToken, profile, done) => {
     // Here, you can save the user to your database or retrieve user information
