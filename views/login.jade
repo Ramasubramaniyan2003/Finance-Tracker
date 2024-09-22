@@ -1,0 +1,61 @@
+extends layout
+block head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    title  Responsive Login and Signup Form 
+    // CSS
+    link(rel='stylesheet' href='./stylesheets/login.css')
+    // Boxicons CSS
+    link(href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet')
+block content
+    section.container.forms
+      .form.login
+        .form-content
+          header Login
+          form#login(role='form')
+            .field.input-field
+              input.input(type='email' placeholder='Email' name="email")
+            .field.input-field
+              input.password(type='password' placeholder='Password' name="password")
+              i.bx.bx-hide.eye-icon
+            .form-link
+              a.forgot-pass(href='#') Forgot password?
+            .field.button-field
+              button Login
+          .form-link
+            span
+              | Don't have an account? 
+              a.link.signup-link(href='#') Signup
+        .line
+        .media-options
+          a.field.google#logingoogle(href='/auth/google')
+            img.google-img(src='images/google.png' alt)
+            span Login with Google
+      // Signup Form
+      .form.signup
+        .form-content
+          header Signup
+          form#signup(role='form')
+            .field.input-field
+              input.input#signupEmail(type='email' placeholder='Email' name="email")
+            .field.input-field
+              input.password#signupPassword(type='password' placeholder='Create password')
+            .field.input-field
+              input.password#signupCnfrmPassword(type='password' placeholder='Confirm password')
+              i.bx.bx-hide.eye-icon
+            .field.button-field
+              button Signup 
+          .form-link
+            span
+              | Already have an account? 
+              a.link.login-link(href='#') Login
+        .line
+        .media-options
+          a.field.google#logingoogle(href='/auth/google')
+            img.google-img(src='images/google.png' alt)
+            span Login with Google
+    // JavaScript
+block foot
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    script(src='./javascripts/login.js')
