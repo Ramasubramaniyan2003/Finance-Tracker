@@ -67,12 +67,10 @@ async (req, res) => {
       });
     }
 
-  
-
     const token = jwt.sign({ id: user.id, email: user.email },'secret', { expiresIn: '1h' });
 
     // Redirect to the client with the JWT token (this should be your frontend URL)
-    res.redirect(`http://localhost:3000?token=${token}&email=${user.email}&id=${user.id}`);
+    res.redirect(`https://finance-manager-i7w2.onrender.com?token=${token}&email=${user.email}&id=${user.id}`);
 
   } catch (error) {
     console.error('Error during Google signup:', error);
