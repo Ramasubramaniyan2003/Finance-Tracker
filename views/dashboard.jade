@@ -7,43 +7,55 @@ block head
 block content 
     include ./sidebar.jade
         .container
+            header.panel-heading
+                h4 
+                    |Dashboard
+            hr
             .content
                 .cards
                     .card
                         .box
-                            h1#todayExp  2194
-                            h5Today Expense
+                            .text-content
+                                h1#todayExp  2194
+                                h5(style="margin-top:5px;") Today Expense
                             .icon-case
-                            //- <i class="fa-solid fa-money-bill"></i>
+                                i.fas.fa-money-bill-wave
                     .card
                         .box
-                            h1#todayInc 53
-                            h5 Today Income
+                            .text-content
+                                h1#todayInc 53
+                                h5(style="margin-top:5px;") Today Income
                             .icon-case
-                            //- img(src='teachers.png', alt='')
+                                i.fas.fa-coins
                     .card
                         .box
-                            h1#lastMonExp 5
-                            h5 Last Month Expense
+                            .text-content
+                                h1#lastMonExp 5
+                                h5(style="margin-top:5px;") Last Month Expense
                             .icon-case
-                            //- img(src='schools.png', alt='')
+                                i.fas.fa-credit-card
                     .card
                         .box
-                            h1#lastMonInc 350000
-                            h5 Last Month Income
+                            .text-content
+                                h1#lastMonInc 350000
+                                h5(style="margin-top:5px;") Last Month Income
                             .icon-case
-                            //- img(src='income.png', alt='')
+                                i.fas.fa-chart-line
                     .card
                         .box
-                            h1#totalInc 350000
-                            h5 Total Income
+                            .text-content
+                                h1#totalInc 350000
+                                h5(style="margin-top:5px;") Total Income
                             .icon-case
+                                i.fas.fa-hand-holding-usd
                     .card
                         .box
-                            h1#totalExp 350000
-                            h5 Total Expense
+                            .text-content
+                                h1#totalExp 350000
+                                h5(style="margin-top:5px;") Total Expense
                             .icon-case
-                            
+                                i.fas.fa-receipt
+
                 
 block foot 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

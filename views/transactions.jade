@@ -16,10 +16,10 @@ block content
                     header.panel-heading
                         | Transactions
                         .btn-group.pull-right(style='margin:-8px 0 0;')
-                            button#addTransaction.btn.btn-success(href='#consumableEntryModal', data-toggle='modal')
+                            button#addTransaction.btn.btn-success(href='#addtransactionModal', data-toggle='modal')
                                 | Add Transaction
                                 i.fa.fa-plus
-                    #consumableEntryModal.modal.fade(aria-hidden='true', aria-labelledby='myModalLabel', role='dialog', data-keyboard="true", data-backdrop="static")
+                    #addtransactionModal.modal.fade(aria-hidden='true', aria-labelledby='myModalLabel', role='dialog', data-keyboard="true", data-backdrop="static")
                             .modal-dialog
                                 .modal-content
                                     form#addTransactionForm(role='form')
@@ -116,7 +116,7 @@ block content
                         th(style = "text-align: center; min-width:4rem;") Type
                         th(style = "text-align: center; min-width:4rem;") Category
                         th(style = "text-align: center; min-width:4rem;") Amount
-                        th(style = "text-align: center; min-width:3rem;") Date
+                        th(style = "text-align: center; min-width:8rem;") Date
                         th(style = "text-align: center; min-width:8rem;") Notes
                         th(style = "text-align: center; min-width:4rem;") Actions
                 tbody
