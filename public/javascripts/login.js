@@ -61,7 +61,6 @@ document.querySelector('#login').addEventListener('submit',(e) => {
         url: '/user/login',
         data: $('#login').serialize(),
     }).done(function (response) {
-        
         if (response.success === true) {
             localStorage.setItem('sessionToken', response.token);
 			localStorage.setItem('id', response.id);
