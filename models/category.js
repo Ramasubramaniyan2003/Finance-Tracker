@@ -34,6 +34,7 @@ module.exports = (sequelize) => {
     classMethods: {
       associate: function (models) {
         Category.belongsTo(models.User, { foreignKey: 'userId' });
+        Category.hasMany(models.Transaction, { foreignKey: 'categoryId' });
       }
     },
     paranoid: true

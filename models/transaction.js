@@ -18,10 +18,6 @@ module.exports = (sequelize, DataTypes) => {
 		type: DataTypes.ENUM('0', '1'), // 0- income, 1- expense
 		allowNull: false,
 	  },
-	  category: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	  },
 	  notes: {
 		type: DataTypes.TEXT,
 		allowNull: true,
@@ -36,15 +32,23 @@ module.exports = (sequelize, DataTypes) => {
 		  model: 'Users',
 		  key: 'id',
 		},
-	  }
+	  },
+	  categoryId: {
+		type: DataTypes.INTEGER,
+		references: {
+			model: 'Categories',
+			key: 'id',
+		  },
+	  },
 	},{
-	  classMethods: {
-        associate: function (models) {
-			models.User.hasMany(Transaction, { foreignKey: 'userId' });
-			Transaction.belongsTo(models.User, { foreignKey: 'userId' });
-        }
-    },
     paranoid: true
 	});
+
+	Transaction.associate = (models) => {
+        Transaction.belongsTo(models.Category, { foreignKey: 'categoryId' });
+		models.User.hasMany(Transaction, { foreignKey: 'userId' });
+		Transaction.belongsTo(models.User, { foreignKey: 'userId' });
+	}
+	
 	return Transaction;
   };
