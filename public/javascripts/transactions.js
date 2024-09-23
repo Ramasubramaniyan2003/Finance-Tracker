@@ -9,8 +9,8 @@ class Transaction {
     constructor() {
         this.getCategories();
         this.initDTtable();
-        this.bindListners(); 
-        
+        this.bindListners();
+
     }
 
     initDTtable() {
@@ -29,8 +29,8 @@ class Transaction {
             scrollY: '40vh',
             scrollCollapse: true,
             columnDefs: [
-                {"className": "text-center", "targets":'_all'}
-              ],
+                { "className": "text-center", "targets": '_all' }
+            ],
             "lengthMenu": [
                 [5, 20, 100, -1],
                 [5, 20, 100, "All"]
@@ -38,26 +38,26 @@ class Transaction {
             "order": [['0', 'desc']],
             "scrollX": true,
             columns: [
-                {   data: 'id',
-                 },
                 {
-                    data: 'type',
-                    render: function(data) {
-                        if(data == 0) {
-                            return 'Income'
-                        } else {
-                            return 'Expense'
-                        }
-                    }
+                    data: 'id',
                 },
                 {
-                    data: 'category',
+                    data: 'type',
                     render: (data, type, full) => {
                         return data == 0 ? 'Income' : 'Expense';
                     }
                 },
                 {
+                    data: 'Category',
+                    render: (data, type, full) => {
+                        return data && data.name && data.id ? `${data.name} (${data.id})` :''
+                    }
+                },
+                {
                     data: 'amount',
+                    render: (data, type, full) => {
+                        return data || '';
+                    }
                 },
                 {
                     data: 'date',
@@ -71,10 +71,10 @@ class Transaction {
                 {
                     data: '',
                     render: function (data, type, full) {
-                            let buttons = '';
-                            buttons += '<a data-id="' + full.id + '" class="update btn btn-default btn-xs" style="margin-bottom: 3px;")>Update</a> &nbsp'
-                            buttons += ' <a data-id="' + full.id + '" class="delete btn btn-default btn-xs" style="margin-bottom: 3px;">Delete</a>'
-                            return buttons;
+                        let buttons = '';
+                        buttons += '<a data-id="' + full.id + '" class="update btn btn-default btn-xs" style="margin-bottom: 3px;")>Update</a> &nbsp'
+                        buttons += ' <a data-id="' + full.id + '" class="delete btn btn-default btn-xs" style="margin-bottom: 3px;">Delete</a>'
+                        return buttons;
                     }
                 }
             ],
@@ -92,8 +92,9 @@ class Transaction {
         });
     }
 
-    async addTransaction(e) {
+    addTransaction(e) {
         e.preventDefault();
+        $('#saveAddTransaction').prop('disabled', true); 
         $.ajax({
             type: 'POST',
             url: '/transaction/add',
@@ -101,13 +102,13 @@ class Transaction {
             headers: { 'X-AT-SessionToken': localStorage.sessionToken }
         }).done(function (response) {
             if (response.success === true) {
-                console.log('msg send...');
-                alert('msg send')
                 $('#transactionTable').DataTable().ajax.reload();
-                $('#addTransactionModal').modal('hide');
-                // $('#saveConsumableEntryBtn').prop('disabled', false);
+                $('#saveAddTransaction').prop('disabled', false);
+                $('#addtransactionModal').modal('hide');
+                document.getElementById('addTransactionForm').reset();
+
             } else {
-                // ('#saveConsumableEntryBtn').prop('disabled', false);
+                ('#saveAddTransaction').prop('disabled', false);
                 alert(response.error || 'Error saving data');
             };
         });
@@ -120,16 +121,17 @@ class Transaction {
             headers: { 'X-AT-SessionToken': localStorage.sessionToken }
         }).done(function (response) {
             if (response.success === true) {
-               console.log(response.data);
-               $('#addTransactionForm #category').select2({
-                placeholder: 'Select Status',
-                allowClear: true,
-                data: response.data.map(function (x) {  return {
-                    id: x.id,
-                    text: `${x.name} (${x.id})` ,
-                    type: x.type
-                }})
-            }).val(null).trigger('change');
+                $('#addTransactionForm #category').select2({
+                    placeholder: 'Select Status',
+                    allowClear: true,
+                    data: response.data.map(function (x) {
+                        return {
+                            id: x.id,
+                            text: `${x.name} (${x.id})`,
+                            type: x.type
+                        }
+                    })
+                }).val(null).trigger('change');
             } else {
                 alert(response.error || 'Error fetching Categories');
             };
@@ -137,33 +139,32 @@ class Transaction {
     }
 
     displayUpdateTransaction() {
-            const clickedRow = $(this).closest('tr');
-            const rowData = $('#transactionTable').DataTable().row(clickedRow).data();
-            $('#updateCategory').val(rowData.category);
-            $('#updateType').val(rowData.type);    
-            $('#updateDate').val(moment(rowData.date).format('YYYY-MM-DDTHH:MM'));
-            $('#updateAmount').val(rowData.amount);  
-            $('#updateNotes').val(rowData.notes); 
-            $('#updateTransactionForm #id').val(rowData.id) 
-            $('#updateTransaction').modal('show');
+        const clickedRow = $(this).closest('tr');
+        const rowData = $('#transactionTable').DataTable().row(clickedRow).data();
+        $('#updateCategory').val(rowData.category);
+        $('#updateType').val(rowData.type);
+        $('#updateDate').val(moment(rowData.date).format('YYYY-MM-DDTHH:MM'));
+        $('#updateAmount').val(rowData.amount);
+        $('#updateNotes').val(rowData.notes);
+        $('#updateTransactionForm #id').val(rowData.id)
+        $('#updateTransaction').modal('show');
     }
 
     updateTransaction(e) {
         e.preventDefault();
+        $('#saveUpdateTransaction').prop('disabled', true);
         $.ajax({
             type: 'PUT',
-            url: '/transaction/update/'+$('#updateTransactionForm #id').val(),
+            url: '/transaction/update/' + $('#updateTransactionForm #id').val(),
             data: $('#updateTransactionForm').serialize(),
             headers: { 'X-AT-SessionToken': localStorage.sessionToken }
         }).done(function (response) {
             if (response.success === true) {
-                console.log('msg send...');
-                alert('msg send')
                 $('#transactionTable').DataTable().ajax.reload();
-                $('#updateTransaction').modal('hide');
-                // $('#saveConsumableEntryBtn').prop('disabled', false);
+                $('#updateTransaction').modal('hide');   
+                $('#saveUpdateTransaction').prop('disabled', false);
             } else {
-                // ('#saveConsumableEntryBtn').prop('disabled', false);
+                ('#saveUpdateTransaction').prop('disabled', false);
                 alert(response.error || 'Error saving data');
             };
         });
@@ -176,31 +177,28 @@ class Transaction {
         if (answer) {
             $.ajax({
                 type: 'DELETE',
-                url: '/transaction/delete/'+rowData.id,
+                url: '/transaction/delete/' + rowData.id,
                 headers: { 'X-AT-SessionToken': localStorage.sessionToken }
             }).done(function (response) {
                 if (response.success === true) {
-                    console.log('deleted');
                     alert('Deleted')
                     $('#transactionTable').DataTable().ajax.reload();
-                    // $('#saveConsumableEntryBtn').prop('disabled', false);
                 } else {
-                    // ('#saveConsumableEntryBtn').prop('disabled', false);
                     alert(response.error || 'Error saving data');
                 };
             });
         }
         else {
-        //some code
+            //some code
         }
     }
 
     bindListners() {
         document.querySelector('#addTransactionForm').addEventListener('submit', this.addTransaction);
         document.querySelector('#updateTransactionForm').addEventListener('submit', this.updateTransaction);
-        $('#transactionTable tbody').on('click','.update', this.displayUpdateTransaction);
-        $('#transactionTable tbody').on('click','.delete', this.deleteTransaction);
-        $('#addTransactionForm #category').on('select2:select', function(e) {
+        $('#transactionTable tbody').on('click', '.update', this.displayUpdateTransaction);
+        $('#transactionTable tbody').on('click', '.delete', this.deleteTransaction);
+        $('#addTransactionForm #category').on('select2:select', function (e) {
             const selectedData = e.params.data;
             $('#addTransactionForm #type').val(selectedData.type)
         });
