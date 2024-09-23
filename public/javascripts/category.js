@@ -36,13 +36,33 @@ class Category {
               ],
  
             columns: [
-                {   data: 'id'},
-                {   data: 'name'},
-                {   data: 'type'},
-                {   data: 'notes'},
+                {   data: 'id',
+                    render: (data) => {
+                        return data || '';
+                    }
+                },
+                {   data: 'name',
+                    render: (data) => {
+                        return data || '';
+                    }
+                },
+                {   data: 'type',
+                    render: (data) => {
+                        if(data == 0) {
+                            return 'Income'
+                        } else {
+                            return 'Expense'
+                        }   
+                    }
+                },
+                {   data: 'notes',
+                    render: (data) => {
+                        return data || '';
+                    }
+                },
                 {   data: 'CreatedAt',
                     render: (data) => {
-                        return moment(data).format('DD-MM-YYYY hh:mm A');
+                        return data && moment(data).format('DD-MM-YYYY hh:mm A') || '';
                     }
                 },
                 {
@@ -61,13 +81,13 @@ class Category {
 
     async addTransaction(e) {
         e.preventDefault();
+        $('#saveUpdateCategory').prop('disabled', true);
         $.ajax({
             type: 'POST',
             url: '/category/add',
             data: $('#addCategoryForm').serialize(),
             headers: { 'X-AT-SessionToken': localStorage.sessionToken }
         }).done(function (response) {
-             $('#saveUpdateCategory').prop('disabled', true);
             if (response.success === true) {
                 $('#categoryTable').DataTable().ajax.reload();
                 $('#categoryEntryModal').modal('hide');
@@ -127,9 +147,6 @@ class Category {
                     alert(response.error || 'Error saving data');
                 };
             });
-        }
-        else {
-        //some code
         }
     }
 
