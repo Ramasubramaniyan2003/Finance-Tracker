@@ -10,9 +10,7 @@ exports.getExpense = async function (req, res) {
             const todayEnd = moment().endOf('day').toDate();
             const lastMonthStart = moment().subtract(1, 'months').startOf('month').toDate();
             const lastMonthEnd = moment().subtract(1, 'months').endOf('month').toDate();
-    
-            // Queries
-    
+        
             // 1. Last month's expenses
             const lastMonthExpense = await models.Transaction.sum('amount', {
                 where: {
@@ -92,6 +90,5 @@ exports.getExpense = async function (req, res) {
     } catch(e) {
         console.log('Error in /api/category/', e);
         res.send({success: false, data:`error loading data ${e}`});
-
     }
 }
