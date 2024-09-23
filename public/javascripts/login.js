@@ -33,7 +33,6 @@ document.querySelector('#signup').addEventListener('submit',(e) => {
     const CnfrmPassword = $('#signupCnfrmPassword').val();
     if(password == CnfrmPassword) {
     const userName = $('#signupEmail').val();
-    console.log(userName, password);
     $.ajax({
         type: 'POST',
         url: '/user/signup',
@@ -41,11 +40,13 @@ document.querySelector('#signup').addEventListener('submit',(e) => {
         headers: { 'X-AT-SessionToken': localStorage.sessionToken }
     }).done(function (response) {
         if (response.success === true) {
-            console.log('msg send...');
-            alert('msg send')
+            localStorage.setItem('sessionToken', response.data.token);
+			localStorage.setItem('id', response.data.id);
+			localStorage.setItem('email', response.data.email);
+            window.location ='/dashboard';
            } else {
             alert(response.error || 'Error saving data');
-        };
+        }
     });
     } else {
         alert('Wrong Password');
@@ -55,9 +56,6 @@ document.querySelector('#signup').addEventListener('submit',(e) => {
 //login
 document.querySelector('#login').addEventListener('submit',(e) => {
     e.preventDefault();
-
-    const userName = $('#login').serialize();
-    console.log(userName);
     $.ajax({
         type: 'POST',
         url: '/user/login',
@@ -68,7 +66,7 @@ document.querySelector('#login').addEventListener('submit',(e) => {
             localStorage.setItem('sessionToken', response.token);
 			localStorage.setItem('id', response.id);
 			localStorage.setItem('email', response.email);
-            window.location ='/transaction';
+            window.location ='/dashboard';
            } else {
             alert(response.error || 'Error Login');
         };
