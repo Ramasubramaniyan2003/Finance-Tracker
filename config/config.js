@@ -16,6 +16,7 @@ module.exports = {
         require: true, // Ensure SSL is used for production
         rejectUnauthorized: false
       }
-    }
+    },
+    url: process.env.DATABASE_URL ? process.env.DATABASE_URL.replace('postgresql://', 'postgres://') : null
   }
 };
